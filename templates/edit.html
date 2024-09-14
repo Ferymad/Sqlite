@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Book</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css', v=2) }}">
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-edit"></i> Edit Book</h1>
+        <form action="{{ url_for('edit', book_id=book.id) }}" method="POST" class="edit-form">
+            <div class="form-group">
+                <label for="title">Book Name:</label>
+                <input type="text" id="title" value="{{ book.title }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="current-rating">Current Rating:</label>
+                <input type="text" id="current-rating" value="{{ book.rating }}/10" readonly>
+            </div>
+            <div class="form-group">
+                <label for="rating">New Rating (1-10):</label>
+                <select name="rating" id="rating" required class="rating-select">
+                    {% for i in range(1, 11) %}
+                    <option value="{{ i }}" {% if i == book.rating %}selected{% endif %}>{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Change Rating</button>
+        </form>
+        <a href="{{ url_for('home') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Home</a>
+    </div>
+</body>
+</html>

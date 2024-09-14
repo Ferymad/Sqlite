@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Notes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <div class="container">
+      <h1><i class="fas fa-sticky-note"></i> Notes for {{ book.title }}</h1>
+      {% if book.notes %}
+        <div id="notes-display" class="notes-content">
+          <p>{{ book.notes | nl2br }}</p>
+        </div>
+        <button id="edit-button" class="btn"><i class="fas fa-edit"></i> Edit Notes</button>
+      {% else %}
+        <p class="no-notes-message">No notes yet. Why not add some thoughts about this book?</p>
+      {% endif %}
+      <div id="notes-form-container" class="notes-form-container" {% if book.notes %}style="display: none;"{% endif %}>
+        <form id="notes-form" action="{{ url_for('notes', book_id=book.id) }}" method="post">
+          <div>
+            <label for="notes"><i class="fas fa-pencil-alt"></i> Your Notes:</label>
+            <textarea name="notes" id="notes" rows="10" placeholder="Start typing your notes here...">{{ book.notes or '' }}</textarea>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Notes</button>
+        </form>
+      </div>
+      <a href="{{ url_for('home') }}" class="btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+    </div>
+    <script>
+      document.getElementById('edit-button')?.addEventListener('click', function() {
+        document.getElementById('notes-display').style.display = 'none';
+        document.getElementById('edit-button').style.display = 'none';
+        document.getElementById('notes-form-container').style.display = 'block';
+      });
+    </script>
+  </body>
+</html>
